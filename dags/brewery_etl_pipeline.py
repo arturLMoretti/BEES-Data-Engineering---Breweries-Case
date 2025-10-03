@@ -23,13 +23,13 @@ from transform_brewery_data import BreweryDataTransformer
 # ==================== DAG Configuration ======================
 
 default_args = {
-    'owner': 'data-engineering',
+    'owner': 'artur-lemes-moretti',
     'depends_on_past': False,
     'start_date': datetime(2025, 10, 1),
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 3,
-    'retry_delay': timedelta(minutes=3),
+    'retry_delay': timedelta(minutes=5),
     'execution_timeout': timedelta(hours=1),
 }
 

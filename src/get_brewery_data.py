@@ -14,25 +14,43 @@ class BreweryAPIClient:
     def __init__(self, base_url: str = BASE_URL):
         self.base_url = base_url
     
+    def _make_request_with_retry(self, url: str, request_description: str, max_retries: int = 3, timeout: int = 5):
+
+        retry_delay = 1
+        
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(url, timeout=timeout)
+                response.raise_for_status()
+                return response.json()
+            except requests.exceptions.Timeout:
+                print(f"Timeout on attempt {attempt + 1}/{max_retries} for {request_description}")
+                if attempt < max_retries - 1:
+                    print(f"Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+                else:
+                    print(f"All retry attempts failed for {request_description}")
+                    return None
+            except Exception as e:
+                print(f"Error in {request_description}: {e}")
+                return None
+    
     def get_brewery_data(self, page: int, per_page: int):
-        try:
-            response = requests.get(f"{self.base_url}?per_page={per_page}&page={page}", timeout=5)
-            response.raise_for_status()
-            return response.json()
-        except Exception as e:
-            print(f"Error getting brewery data: {e}")
-            return []
+        url = f"{self.base_url}?per_page={per_page}&page={page}"
+        request_description = f"page {page}"
+        
+        result = self._make_request_with_retry(url, request_description)
+        return result if result is not None else []
     
     def get_total_data_count(self):
-
-        try:
-            response = requests.get(f"{self.base_url}/meta", timeout=5)
-            response.raise_for_status()
-            data = response.json()
-            return data.get("total", 0)
-        except Exception as e:
-            print(f"Error getting total data count: {e}")
-            return 0
+        url = f"{self.base_url}/meta"
+        request_description = "metadata request"
+        
+        result = self._make_request_with_retry(url, request_description)
+        if result is not None:
+            return result.get("total", 0)
+        return 0
 
 
 class BreweryDataSaver:
