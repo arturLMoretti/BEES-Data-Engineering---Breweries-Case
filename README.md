@@ -21,8 +21,10 @@ Orchestration is being made by Apache Airflow. Data is being saved into medalion
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                  BREWERY ETL PIPELINE                           | └─────────────────────────────────────────────────────────────────┘
-
+│                  BREWERY ETL PIPELINE                           |
+└────────┬───────────────────────────────────────────────────────┘
+         │
+         ▼
 ┌──────────────────┐
 │  OpenBrewery API │
 └────────┬─────────┘
@@ -123,6 +125,7 @@ password: admin
 ```
 
 - Trigger the pipeline!
+
 
 
 
