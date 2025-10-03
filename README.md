@@ -89,7 +89,7 @@ Data ingestion is performed via the [List Breweries](https://www.openbrewerydb.o
 
 # How to start
 
-- Create an env file:
+- Create an .env file:
 
 ```env
 AIRFLOW_UID=1000
@@ -120,6 +120,7 @@ password: admin
 ```
 
 - Trigger the pipeline!
+
 
 
 
