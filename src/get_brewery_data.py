@@ -14,7 +14,7 @@ class BreweryAPIClient:
     def __init__(self, base_url: str = BASE_URL):
         self.base_url = base_url
     
-    def _make_request_with_retry(self, url: str, request_description: str, max_retries: int = 5, timeout: int = 10):
+    def _make_request_with_retry(self, url: str, request_description: str, max_retries: int = 5, timeout: int = 30):
 
         retry_delay = 5
         
