@@ -215,4 +215,11 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+.vscode/
+
+# Docker files gitignore
 data/
+logs/
+plugins/
+test_data/
+config/
