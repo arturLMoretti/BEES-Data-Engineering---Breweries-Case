@@ -67,12 +67,17 @@ Orchestration is being made by Apache Airflow
 # Data Lake Archetecture
 
 ## Bronze layer
-  - Data is being extracted using endpoint (()) and saved in the json format. Metada endpoint is used to make all requests 
-- Silver layer data is saved in Parquet, using Pyspark. Data is cleaned in order to get non null values of id, name, country, state 
-- Golde Layer is saved in 
+  - Data is being extracted using endpoint [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries) and saved in the json format.
+  - Metadata endpoint is used to evaluate how many requests are being made in total
+
+## Silver layer
+  - Silver layer data is saved in Parquet, using Pyspark. Data is cleaned in order to get non null values of id, name, country and state 
+
+## Gondel layer
+- 
 
 # External services
- Get a SendGrid Key to send emails
+ No external cloud services are required to run this project
 
 # How to start
 
@@ -93,14 +98,10 @@ _AIRFLOW_WWW_USER_PASSWORD=admin
 - Run docker compose 
 
 ```bash
+docker compose down -v
+docker compose build
 docker compose up airflow-init
 docker compose up
-```
-
-- Run o bash: 
-
-```bash
-sudo ./start.sh
 ```
 
 - open [local server](http://localhost:8080/)
@@ -111,4 +112,7 @@ sudo ./start.sh
 user: admin
 password: admin
 ```
+
+- Run the pipeline!
+
 
