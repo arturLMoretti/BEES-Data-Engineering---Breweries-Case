@@ -1,7 +1,6 @@
 # BEES Data Engineering - Breweries Case
-## Solution proposed by Artur Lemes Moretti
 
-This repository contains the solution proposed for the technical case 
+This repository contains my proposed for the Data Engineer techinical case at Bees. I uses Apache Airflow for orchestration and PySpark for transformations, following the Medallion Archetecture. The solution is fully containerized with Docker Compose, requiring no external cloud services.
 
 # External files 
 - .gitignore template from [GitHub Python gitignore](https://github.com/github/gitignore/blob/main/Python.gitignore)
@@ -10,17 +9,19 @@ This repository contains the solution proposed for the technical case
 
 # Fetching data
 
-Data is being fetched by requests function and saved in json format
+Data ingestion is performed via the [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries), orchestrated with Apache Airflow
+- Up to 3 retries
+- Retray delay: 5 minutes
+- Timeout: 1 hour
 
 # Orchestration tool
 
-Orchestration is being made by Apache Airflow
+Orchestration is being made by Apache Airflow. Data is being saved into medalion architecture
+- In case of errors, 3 retries are used with a retray delay of 5 minutes. A timeout of 1 hour was used
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                  BREWERY ETL PIPELINE                           │
-│                Bronze → Silver → Gold                           │
-└─────────────────────────────────────────────────────────────────┘
+│                  BREWERY ETL PIPELINE                           | └─────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────┐
 │  OpenBrewery API │
@@ -67,21 +68,31 @@ Orchestration is being made by Apache Airflow
 # Data Lake Archetecture
 
 ## Bronze layer
-  - Data is being extracted using endpoint [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries) and saved in the json format.
-  - Metadata endpoint is used to evaluate how many requests are being made in total
+  - Extracts data [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries)
+  - Saves raw json files
+  - Uses metadata endpoint to calculate total requests
+  - Implements exponential backof with 3 retries
 
 ## Silver layer
-  - Silver layer data is saved in Parquet, using Pyspark. Data is cleaned in order to get non null values of id, name, country and state 
+  - Reads Bronze JSON files with PySpark
+  - Cleans data (removes nulls/duplicates in id, name, country, state)
+- Saves partitioned Parquet files by location
 
-## Gondel layer
-- 
+## Golden layer
+- Agregates breweries by type and location
+- Saves final datasets in Parquet
 
-# External services
- No external cloud services are required to run this project
+## Data Validation
+- Check records counts
+- Check partiion presence
+- Final success notification
+
+## External services
+ - No external cloud services are required to run this project
 
 # How to start
 
-- create a env file
+- Create an env file:
 
 ```env
 AIRFLOW_UID=1000
@@ -95,7 +106,7 @@ _AIRFLOW_WWW_USER_PASSWORD=admin
 
 ```
 
-- Run docker compose 
+- Star Airflow with docker compose:
 
 ```bash
 docker compose down -v
@@ -104,15 +115,14 @@ docker compose up airflow-init
 docker compose up
 ```
 
-- open [local server](http://localhost:8080/)
-
-- Login 
+- Access the Airflow UI [local server](http://localhost:8080/)
 
 ```
 user: admin
 password: admin
 ```
 
-- Run the pipeline!
+- Trigger the pipeline!
+
 
 
