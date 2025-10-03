@@ -1,6 +1,6 @@
 # BEES Data Engineering - Breweries Case
 
-This repository contains my proposed for the Data Engineer techinical case at Bees. I uses Apache Airflow for orchestration and PySpark for transformations, following the Medallion Archetecture. The solution is fully containerized with Docker Compose, requiring no external cloud services.
+This repository contains my proposed for the Data Engineer techinical case at Bees. It uses Apache Airflow for orchestration and PySpark for transformations, following the Medallion Archtecture. The solution is fully containerized with Docker Compose, requiring no external cloud services.
 
 # External files 
 - .gitignore template from [GitHub Python gitignore](https://github.com/github/gitignore/blob/main/Python.gitignore)
@@ -123,6 +123,7 @@ password: admin
 ```
 
 - Trigger the pipeline!
+
 
 
 
