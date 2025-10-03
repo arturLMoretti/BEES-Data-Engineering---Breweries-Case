@@ -1,23 +1,18 @@
 # BEES Data Engineering - Breweries Case
 
-This repository contains my proposed for the Data Engineer techinical case at Bees. It uses Apache Airflow for orchestration and PySpark for transformations, following the Medallion Archtecture. The solution is fully containerized with Docker Compose, requiring no external cloud services.
+This repository contains my proposed solution for the Data Engineer techinical case at Bees. It uses Apache Airflow for orchestration and PySpark for transformations, following the Medallion Archtecture. The solution is fully containerized with Docker Compose, requiring no external cloud services.
 
 # External files 
 - .gitignore template from [GitHub Python gitignore](https://github.com/github/gitignore/blob/main/Python.gitignore)
 - Apache Airflow docker compose file [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
 
 
-# Fetching data
+# Data pipeline Overview
 
-Data ingestion is performed via the [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries), orchestrated with Apache Airflow
+Data ingestion is performed via the [List Breweries](https://www.openbrewerydb.org/documentation#list-breweries) API, orchestrated with Apache Airflow
 - Up to 3 retries
 - Retray delay: 5 minutes
 - Timeout: 1 hour
-
-# Orchestration tool
-
-Orchestration is being made by Apache Airflow. Data is being saved into medalion architecture
-- In case of errors, 3 retries are used with a retray delay of 5 minutes. A timeout of 1 hour was used
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -125,6 +120,7 @@ password: admin
 ```
 
 - Trigger the pipeline!
+
 
 
 
